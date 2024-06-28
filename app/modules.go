@@ -13,8 +13,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
-	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	authzmodule "github.com/cosmos/cosmos-sdk/x/authz/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
@@ -105,7 +103,6 @@ var ModuleBasics = module.NewBasicManager(
 	upgrade.AppModuleBasic{},
 	evidence.AppModuleBasic{},
 	transferSudo.AppModuleBasic{},
-	vesting.AppModuleBasic{},
 	wasm.AppModuleBasic{},
 	vestings.AppModuleBasic{},
 	tax.AppModuleBasic{},
@@ -134,7 +131,7 @@ func appModules(
 		),
 		authzmodule.NewAppModule(appCodec, *app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, encodingConfig.InterfaceRegistry),
 		auth.NewAppModule(appCodec, *app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName)),
-		vesting.NewAppModule(*app.AccountKeeper, app.BankKeeper),
+		vestings.NewAppModule(*app.AccountKeeper, app.BankKeeper),
 		bank.NewAppModule(appCodec, *app.BankKeeper, *app.AccountKeeper, app.GetSubspace(banktypes.ModuleName)),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper, false),
 		crisis.NewAppModule(app.CrisisKeeper, skipGenesisInvariants, app.GetSubspace(crisistypes.ModuleName)),
@@ -213,7 +210,6 @@ func orderBeginBlockers() []string {
 		ibcexported.ModuleName,
 		genutiltypes.ModuleName,
 		banktypes.ModuleName,
-		vestingtypes.ModuleName,
 		authtypes.ModuleName,
 		paramstypes.ModuleName,
 		authz.ModuleName,
@@ -242,7 +238,6 @@ func orderEndBlockers() []string {
 		upgradetypes.ModuleName,
 		authtypes.ModuleName,
 		capabilitytypes.ModuleName,
-		vestingtypes.ModuleName,
 		minttypes.ModuleName,
 		evidencetypes.ModuleName,
 		feegrant.ModuleName,
@@ -276,7 +271,6 @@ func genesisModuleOrder() []string {
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
-		vestingtypes.ModuleName,
 		slashingtypes.ModuleName,
 		govtypes.ModuleName,
 		minttypes.ModuleName,
