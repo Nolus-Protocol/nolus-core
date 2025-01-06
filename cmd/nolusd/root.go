@@ -780,6 +780,8 @@ func OverwriteWithCustomConfig(configFilePath string, sectionKeyValues []Section
 	}
 
 	return nil
+}
+
 func ProvideClientContext(
 	appCodec codec.Codec,
 	interfaceRegistry codectypes.InterfaceRegistry,
